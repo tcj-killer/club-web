@@ -13,18 +13,6 @@
         <i class="el-icon-user-solid"></i>
         <span>用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/ordermanages">
-        <i class="el-icon-shopping-cart-1"></i>
-        <span slot="title">订单管理</span>
-      </el-menu-item>
-      <el-menu-item index="/advertmanages">
-        <i class="el-icon-s-data"></i>
-        <span slot="title">广告管理</span>
-      </el-menu-item>
-      <el-menu-item index="/opinionmanages">
-        <i class="el-icon-s-marketing"></i>
-        <span slot="title">意见管理</span>
-      </el-menu-item>
     </el-menu>
   </div>
 </template>

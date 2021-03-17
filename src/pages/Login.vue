@@ -3,12 +3,9 @@
   <div class="login-page">
     <!-- 静态信息部分 -->
     <div class="main">
-      <div class="mainLeft">
-        <h1>数码乡村后台管理系统</h1>
-      </div>
       <div class="mainRight">
         <h2>欢迎登录</h2>
-        <h3>数码乡村后台管理系统</h3>
+        <h3>大连“旗战”球迷协会管理网站</h3>
         <!-- 表单部分 -->
         <el-form
           :model="ruleForm"
@@ -94,6 +91,7 @@ export default {
   methods: {
     //登录
     submitForm(ruleForm) {
+      this.$router.push("/usermanages");
       this.$http({
         url: this.$http.adornUrl("/login"),
         method: "post",
@@ -151,7 +149,7 @@ export default {
   padding: 0;
 }
 .login-page {
-  background-image: url(../assets/bg2.png);
+  background-image: url(../assets/bj.jpg);
   background-repeat: no-repeat;
   background-size: 100vw 100vh;
   width: 100%;
@@ -167,11 +165,11 @@ export default {
     font-size: 25px;
   }
   .main {
-    width: 805px;
+    width: 295px;
     height: 363px;
     position: absolute;
     top: 155px;
-    left: 35vw;
+    right: 10vw;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 7px;
     overflow: hidden;

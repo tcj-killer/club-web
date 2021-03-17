@@ -32,7 +32,7 @@ http.interceptors.response.use(response => {
   return response
 }, error => {// 401, token失效
     // TODO 清除登陆信息
-    router.push({ name: 'login' })
+    //router.push({ name: 'login' })
   return Promise.reject(error)
 })
 /**

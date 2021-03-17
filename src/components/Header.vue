@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- 页面头部 公共组件 -->
-    <div class="systemTitle">数码乡村后台管理系统</div>
+    <div class="systemTitle">大连“旗战”球迷协会管理网站</div>
     <div class="headerRight">
       <div class="header-user-con">
         <div class="user-avator">
