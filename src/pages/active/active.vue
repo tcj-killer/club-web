@@ -342,7 +342,7 @@ export default {
             left:40,
             bottom: 40
           },
-          xAxis: [
+          xAxis:  [
             {
               type:'category',
               axisLine: {
