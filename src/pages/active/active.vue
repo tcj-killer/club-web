@@ -337,7 +337,7 @@ export default {
 
           },
           calculable : true,
-          grid: {
+          grid:  {
             top: 40,
             left:40,
             bottom: 40
