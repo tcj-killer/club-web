@@ -10,15 +10,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/prod-api': {
-      //   target: "http://127.0.0.1:8081", //后端请求地址
-      //   // target: "http://47.95.223.75:51120", //后端请求地址
-      //   changeOrigin: true, //是否跨域y
-      //   secure: false, //是否使用https
-      //   pathRewrite: {
-      //     '^/prod-api': '/prod-api'
-      //   }
-      // }
+      '/prod-api': {
+        target: "http://localhost:3000", //后端请求地址
+        // target: "http://47.95.223.75:51120", //后端请求地址
+        changeOrigin: true, //是否跨域y
+        secure: false, //是否使用https
+        pathRewrite: {
+          '^/prod-api': '/prod-api'
+        }
+      }
     },
 
     // Various Dev Server settings

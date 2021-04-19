@@ -66,13 +66,13 @@ export default {
   data() {
     // 原密码校验
     var validatePassWord = (rule, value, callback) => {
-      const passWord = /^[0-9A-Za-z]{8,16}$/;
+      const passWord = /^[0-9A-Za-z]{6,16}$/;
       if (value === "") {
         callback(new Error("请输入原密码"));
       }
       setTimeout(() => {
         if (!passWord.test(value)) {
-          return callback(new Error("密码为8-16位英文或数字"));
+          return callback(new Error("密码为6-16位英文或数字"));
         } else {
           if (this.editPwd.passWord !== "") {
             this.$refs.editPwd.validateField("passWord");
@@ -82,11 +82,11 @@ export default {
     };
     // 密码校验
     var validatePassWordCheck = (rule, value, callback) => {
-      const passWord = /^[0-9A-Za-z]{8,16}$/;
+      const passWord = /^[0-9A-Za-z]{6,16}$/;
       if (value === "") {
         callback(new Error("请输入密码"));
       } else if (!passWord.test(value)) {
-        callback(new Error("密码为8-16位英文或数字"));
+        callback(new Error("密码为6-16位英文或数字"));
       } else if (value == this.editPwd.rePassWord) {
         callback(new Error("两次输入密码与原密码不能一致!"));
         this.editPwd.passWord = "";
@@ -96,7 +96,7 @@ export default {
     };
     // 确定密码校验
     var validatePassWordCheckOne = (rule, value, callback) => {
-      const passWord = /^[0-9A-Za-z]{8,16}$/;
+      const passWord = /^[0-9A-Za-z]{6,16}$/;
       if (value === "") {
         callback(new Error("请再次输入密码"));
       } else if (value != this.editPwd.passWord) {
@@ -149,14 +149,14 @@ export default {
     myFunction() {
       if (
         this.editPwd.passWord.length < 14 &&
-        this.editPwd.passWord.length >= 12
+        this.editPwd.passWord.length >= 11
       ) {
         this.isshow1 = false;
         this.isshow2 = true;
         this.isshow3 = false;
       }
       if (
-        this.editPwd.passWord.length >= 8 &&
+        this.editPwd.passWord.length >= 6 &&
         this.editPwd.passWord.length <= 10
       ) {
         this.isshow1 = true;
@@ -172,17 +172,8 @@ export default {
     // 退出登录接口
     handleCommand(command) {
       if (command == "loginout") {
-        let loginOutParms = {};
-        this.$axios.post("prod-api/common/logout", loginOutParms).then(res => {
-          if (200 == res.data.code) {
-            this.$router.push("/");
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: "success"
-            });
-          }
-        });
+        this.$router.push('/login')
+        this.$store.getters.userinfo = [];
       }
       if (command == "changePwd") {
         this.dialogPwdEdit = true;
@@ -199,32 +190,53 @@ export default {
       this.isshow1 = false;
       this.isshow2 = false;
       this.isshow3 = false;
-      this.$axios
-        .put(
-          "prod-api/backend/home/updatePassword/" +
-            this.editPwd.rePassWord +
-            "/" +
-            this.editPwd.passWord
-        )
-        .then(res => {
-          if (200 == res.data.code) {
-            this.editPwd.rePassWord = "";
-            this.editPwd.passWord = "";
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: "success"
-            });
-          } else {
-            this.editPwd.rePassWord = "";
-            this.editPwd.passWord = "";
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: "error"
-            });
+      //判断原密码是否正确
+      console.log(this.$store.getters.userinfo)
+      if(this.$store.getters.userinfo[0].user_pass == this.editPwd.rePassWord){
+        this.$http({
+          url:this.$http.adornUrl('/api/changePass'),
+          method:'post',
+          data:{
+            id:this.$store.getters.userinfo[0].user_id,
+            password:this.editPwd.passWord
           }
-        });
+        }).then(({data})=>{})
+        this.$message({
+          type:'success',
+          message:'密码修改成功'
+        })
+      }else{
+        this.$message({
+          type:'error',
+          message:'原密码输入错误，请重新输入'
+        })
+      }
+      // this.$axios
+      //   .put(
+      //     "prod-api/backend/home/updatePassword/" +
+      //       this.editPwd.rePassWord +
+      //       "/" +
+      //       this.editPwd.passWord
+      //   )
+      //   .then(res => {
+      //     if (200 == res.data.code) {
+      //       this.editPwd.rePassWord = "";
+      //       this.editPwd.passWord = "";
+      //       this.$message({
+      //         showClose: true,
+      //         message: res.data.msg,
+      //         type: "success"
+      //       });
+      //     } else {
+      //       this.editPwd.rePassWord = "";
+      //       this.editPwd.passWord = "";
+      //       this.$message({
+      //         showClose: true,
+      //         message: res.data.msg,
+      //         type: "error"
+      //       });
+      //     }
+      //   });
     }
   },
   mounted() {

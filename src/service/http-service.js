@@ -6,7 +6,7 @@ import merge from 'lodash/merge'
 
 const http = axios.create({
   //baseURL: process.env.VUE_APP_MOCK_DATA_URL,
-  baseURL: 'http://localhost:8081', // api 的 base_url
+  baseURL: 'http://localhost:3000', // api 的 base_url
   timeout: 1000 * 300,
   withCredentials: false,
   headers: {

@@ -2,6 +2,8 @@
   <!-- 登陆界面 -->
   <div class="login-page">
     <!-- 静态信息部分 -->
+    <img src="../assets/img/login-bg.png" alt="">
+    <img src="../assets/img/title.png" alt="">
     <div class="main">
       <div class="mainRight">
         <h2>欢迎登录</h2>
@@ -31,11 +33,13 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button type="primary" @click="login('ruleForm')"
             >登录</el-button
           >
           <br />
           <a href="#" @click="wangji()">忘记密码，寻求帮助？</a>
+            <!-- 止默认行为-->
+          <a @click.prevent="toRegister" style="cursor: pointer" href="">注册</a>
         </el-form>
       </div>
     </div>
@@ -65,8 +69,8 @@ export default {
       userType: "01",
       roles: "",
       ruleForm: {
-        username: "abc",
-        password: "123456",
+        username: "",
+        password: "",
       },
       // 校验
       rules: {
@@ -80,7 +84,7 @@ export default {
         password: [
           {
             required: true,
-            pattern: /^[0-9A-Za-z]{8,16}$/,
+            pattern: /^[0-9A-Za-z]{6,16}$/,
             message: "用户名或密码错误",
             trigger: "blur",
           },
@@ -88,12 +92,15 @@ export default {
       },
     };
   },
+  mounted() {
+    //this.login();
+  },
   methods: {
     //登录
     submitForm(ruleForm) {
       this.$router.push("/usermanages");
       this.$http({
-        url: this.$http.adornUrl("/login"),
+        url: this.$http.adornUrl("/api/login"),
         method: "post",
         data: this.$http.adornData({
           username: this.ruleForm.username,
@@ -107,6 +114,47 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    login(ruleForm){
+        this.$http({
+          url: this.$http.adornUrl('/api/login'),
+          method: 'post',
+          data: this.$http.adornData({
+            username: this.ruleForm.username,
+            password: this.ruleForm.password,
+          })
+        }).then(({data}) => {
+          // console.log(data)
+          if(data.status==0&&data.data.info[0].status == 0){
+            //存储用户信息
+            this.$store.state.userInfo = data.data.info;
+            console.log(this.$store.getters.userinfo)
+            //登录成功，跳转至首页
+            this.$message({
+              type:'success',
+              message:'登陆成功，欢迎来到首页'
+            })
+            this.$router.push('/index')
+          }else if(data.data.info[0].status!=0){
+            //账号封停
+            this.$message({
+              message:'账号已封停',
+              type: "error",
+              showClose: true,
+            })
+          }
+          else{
+            //登录失败
+            this.$message({
+              message:'账号或密码错误，请重新登录',
+              type: "error",
+              showClose: true,
+            })
+          }
+        })
+    },
+    toRegister(){
+      this.$router.push('/register')
     },
     //获取登陆人信息
     loginPerson() {
@@ -149,13 +197,23 @@ export default {
   padding: 0;
 }
 .login-page {
-  background-image: url(../assets/bj.jpg);
+  background-image: url(../assets/img/1.png);
   background-repeat: no-repeat;
   background-size: 100vw 100vh;
   width: 100%;
   height: 100vh;
   margin: 0 auto;
   position: relative;
+  img:nth-of-type(1){
+    position:absolute;
+    left:20%;
+    top:18%;
+    width:30%;
+  }
+  img:nth-of-type(2){
+    position:absolute;
+    width:20%;
+  }
   .logo {
     position: absolute;
     left: 40px;
