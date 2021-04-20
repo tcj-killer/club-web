@@ -61,7 +61,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-              <el-button type="primary" @click="replay('',item.id,form2)">确 定</el-button>
+              <el-button type="primary" @click="replay('作者',item.id,form2)">确 定</el-button>
             </div>
           </el-dialog>
 
@@ -133,7 +133,6 @@ export default {
   created() {
   },
   mounted() {
-
     var _this = this;
     this.timer = setInterval(() => {
       _this.date = new Date(); // 修改日期数据
@@ -258,7 +257,7 @@ export default {
           replayed_id:replayed_id,
         }
       }).then(({data})=>{})
-      this.$router.go(0)
+      // this.$router.go(0)
       this.$message({
         type:'success',
         message:'回复成功'

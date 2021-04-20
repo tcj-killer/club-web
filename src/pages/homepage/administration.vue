@@ -11,7 +11,7 @@
           :header-cell-style="{'text-align':'center'}"
           @selection-change="handleSelectionChange"
           border
-          style="width: 100%">
+          style="width: 100%;margin-top:1%">
           <el-table-column
             type="selection"
             width="55">
@@ -86,7 +86,7 @@
             :header-cell-style="{'text-align':'center'}"
             @selection-change="selectnews"
             border
-            style="width: 100%">
+            style="width: 100%;margin-top:1%">
             <el-table-column
               type="selection"
               width="55">
@@ -194,7 +194,7 @@
             :header-cell-style="{'text-align':'center'}"
             @selection-change="selectgoods"
             border
-            style="width: 100%">
+            style="width: 100%;margin-top:1%">
             <el-table-column
               type="selection"
               width="55">

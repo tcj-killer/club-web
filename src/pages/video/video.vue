@@ -1,32 +1,40 @@
 <template>
   <!-- 用户信息页面 -->
   <div class="video">
-    <el-button type="primary" @click="dialogFormVisible = true">发布视频</el-button>
+    <div class="video-put">
+      <el-button type="primary" @click="dialogFormVisible = true">发布视频</el-button>
 
-    <el-dialog title="发布视频" :visible.sync="dialogFormVisible" @close="closeDialog">
-      <el-form :model="form">
-        <el-form-item label="视频名称" :label-width="formLabelWidth">
-          <el-input v-model="form.title" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-upload
-          class="upload-demo"
-          drag
-          action="http://localhost:3000/api/upload"
-          :on-success="handelSuccess"
-          :before-upload="beforeUpload"
-          multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">只能上传mp4文件文件</div>
-        </el-upload>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="videoincrease">确 定</el-button>
-      </div>
-    </el-dialog>
+      <el-dialog title="发布视频" :visible.sync="dialogFormVisible" @close="closeDialog" z-index="98">
+        <el-form :model="form">
+          <el-form-item label="视频名称" :label-width="formLabelWidth">
+            <el-input v-model="form.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-upload
+            class="upload-demo"
+            style="margin-left:16%;"
+            drag
+            action="http://localhost:3000/api/upload"
+            :on-success="handelSuccess"
+            :before-upload="beforeUpload"
+            multiple>
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传mp4文件文件</div>
+          </el-upload>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="videoincrease">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
 
     <div class="video-content">
+      <div class="video-top">
+        <div class="title">视频中心</div>
+        <img src="../../assets/img/title.png" alt="">
+        <img src="../../assets/img/mapBottom.png" alt="">
+      </div>
       <div class="video-list" v-for="(item,index) in videolist">
         <div class="top">
           <div class="title">{{item.title}}</div>
@@ -193,16 +201,50 @@ body{
 }
 .video {
   width: 100%;
-  height: 100%;
+  background-color: white;
+  .video-put{
+    position: absolute;
+    right:5%;
+    top:10%;
+    z-index: 99;
+  }
   .video-content{
     width:90%;
     margin:0 5%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    position: relative;
+    .video-top{
+      width:100%;
+      height:20px;
+      img:nth-of-type(1){
+        width:33%;
+        margin-left:-5%;
+      }
+      img:nth-of-type(2){
+        width:30%;
+        position: absolute;
+        left:33%;
+        top:0%;
+      }
+      .title{
+        position: absolute;
+        left:37%;
+        top:3%;
+        font-size: 30px;
+        letter-spacing: 50px;
+        font-weight: 600;
+        color: #00F0FF;
+        background: linear-gradient(0deg, #00FFFF 50%, #FFFFFF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+
     .video-list{
-      width:45%;
-      margin-top:10%;
+      width:48%;
+      margin-top:9%;
       .top{
         width:100%;
         display: flex;
