@@ -237,6 +237,7 @@
             </el-table-column>
             <el-table-column
               prop="status"
+              fixed="right"
               label="状态"
               width="100">
             </el-table-column>
@@ -261,6 +262,75 @@
           </div>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="视频管理">
+        <el-button type="danger" @click="videoOff">停用</el-button>
+        <el-button type="primary" @click="videoPut">启用</el-button>
+        <div class="goods">
+          <el-table
+            :data="videolist.slice((currentPage3-1)*5,currentPage3*5)"
+            :header-cell-style="{'text-align':'center'}"
+            @selection-change="selectvideo"
+            border
+            style="width: 100%;margin-top:1%">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              fixed
+              prop="video_id"
+              label="视频编号"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="video_title"
+              label="视频标题"
+              show-overflow-tooltip
+              width="450">
+            </el-table-column>
+            <el-table-column
+              prop="video_author"
+              label="视频作者"
+              show-overflow-tooltip
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="video_point"
+              label="点赞数"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="video_time"
+              label="发布时间"
+              width="300">
+            </el-table-column>
+            <el-table-column
+              prop="status"
+              fixed="right"
+              label="状态"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="100">
+              <template slot-scope="scope">
+                <el-button @click="videodelete(scope.row)" type="text" size="small">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="bottom-bottom">
+            <el-pagination
+              @current-change="handleCurrentChange2"
+              :current-page="currentPage3"
+              :page-sizes=[5]
+              :page-size=1
+              layout="sizes,prev, pager, next, jumper"
+              :total="videolist.length">
+            </el-pagination>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -277,6 +347,7 @@ export default {
       currentPage:1,
       currentPage1:1,
       currentPage2:1,
+      currentPage3:1,
       multipleSelection:[],
       goods: {
         name:'',
@@ -291,6 +362,8 @@ export default {
       formLabelWidth: '120px',
       path:'',
       fileList:[],
+      videolist:[],
+      videosel:[]
     };
   },
   created() {
@@ -323,6 +396,7 @@ export default {
     this.GetuserInfo();
     this.Getnews();
     this.Getgoods();
+    this.Getvideo();
   },
   methods: {
     //新增商品，上传图片
@@ -556,6 +630,69 @@ export default {
         message:'删除成功'
       })
       this.$router.go(0);
+    },
+    //查询视频信息
+    Getvideo(){
+      this.$http({
+        url:this.$http.adornUrl('/api/video/select'),
+        method:'get'
+      }).then(({data})=>{
+          this.videolist = data.data;
+          this.videolist.forEach(item=>{
+            if(item.status == 0){
+              item.status = '启用'
+            }else{
+              item.status = '禁用'
+            }
+          })
+      })
+    },
+    //删除视频
+    videodelete(val){
+      let id = val.video_id;
+      this.$http({
+        url:this.$http.adornUrl('/api/video/delete'),
+        method:'post',
+        data:{id:id}
+      }).then(({data})=>{})
+      this.$message({
+        type:'success',
+        message:'删除成功'
+      })
+    },
+    //禁用视频
+    videoOff(){
+      let arr = [];
+      this.videosel.forEach(item=>{
+        arr.push(item.video_id)
+      })
+      this.$http({
+        url:this.$http.adornUrl('/api/video/off'),
+        method:'post',
+        data:{arr:arr}
+      }).then(({data})=>{})
+      this.$message({
+        type:'success',
+        message:'停用成功'
+      })
+    },
+    videoPut(){
+      let arr = [];
+      this.videosel.forEach(item=>{
+        arr.push(item.video_id)
+      })
+      this.$http({
+        url:this.$http.adornUrl('/api/video/put'),
+        method:'post',
+        data:{arr:arr}
+      }).then(({data})=>{})
+      this.$message({
+        type:'success',
+        message:'启用成功'
+      })
+    },
+    selectvideo(val){
+      this.videosel = val;
     },
     handleCurrentChange(val) {
       this.currentPage = val;

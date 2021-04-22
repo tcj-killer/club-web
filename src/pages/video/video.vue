@@ -28,14 +28,14 @@
         </div>
       </el-dialog>
     </div>
-
+    <div class="video-top">
+      <div class="title">视频中心</div>
+      <img src="../../assets/img/title.png" alt="">
+      <img src="../../assets/img/mapBottom.png" alt="">
+    </div>
     <div class="video-content">
-      <div class="video-top">
-        <div class="title">视频中心</div>
-        <img src="../../assets/img/title.png" alt="">
-        <img src="../../assets/img/mapBottom.png" alt="">
-      </div>
-      <div class="video-list" v-for="(item,index) in videolist">
+
+      <div class="video-list" v-for="(item,index) in videolist.slice((currentPage-1)*4,currentPage*4)">
         <div class="top">
           <div class="title">{{item.title}}</div>
           <div class="point" @click="addpoint(item.id)"><i class="el-icon-star-off "></i>{{item.point}}</div>
@@ -46,8 +46,19 @@
           <div class="time">发布时间：{{item.time}}</div>
         </div>
       </div>
+
     </div>
 
+    <div class="video-bottom">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes=[4]
+        :page-size=1
+        layout="sizes,prev, pager, next, jumper"
+        :total="videolist.length">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -71,7 +82,8 @@ export default {
       form:{
         title:'',
       },
-      checktime:''
+      checktime:'',
+      currentPage:1
 
     };
   },
@@ -161,14 +173,16 @@ export default {
         method:'get'
       }).then(({data})=>{
         data.data.forEach(item=>{
-          let obj = {};
-          obj.point = item.video_point;
-          obj.title = item.video_title;
-          obj.author = item.video_author;
-          obj.time = item.video_time;
-          obj.url = item.video_url;
-          obj.id = item.video_id;
-          this.videolist.push(obj)
+          if(item.status == 0){
+            let obj = {};
+            obj.point = item.video_point;
+            obj.title = item.video_title;
+            obj.author = item.video_author;
+            obj.time = item.video_time;
+            obj.url = item.video_url;
+            obj.id = item.video_id;
+            this.videolist.push(obj)
+          }
         })
       })
     },
@@ -186,7 +200,10 @@ export default {
         message:'点赞成功'
       })
       this.$router.go(0)
-    }
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
   }
 
 };
@@ -208,6 +225,31 @@ body{
     top:10%;
     z-index: 99;
   }
+  .video-top{
+    width:100%;
+    height:100px;
+    img:nth-of-type(1){
+      width:33%;
+    }
+    img:nth-of-type(2){
+      width:30%;
+      position: absolute;
+      left:33%;
+      top:0%;
+    }
+    .title{
+      position: absolute;
+      left:38%;
+      top:5%;
+      font-size: 30px;
+      letter-spacing: 50px;
+      font-weight: 600;
+      color: #00F0FF;
+      background: linear-gradient(0deg, #00FFFF 50%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
   .video-content{
     width:90%;
     margin:0 5%;
@@ -215,41 +257,16 @@ body{
     justify-content: space-between;
     flex-wrap: wrap;
     position: relative;
-    .video-top{
-      width:100%;
-      height:20px;
-      img:nth-of-type(1){
-        width:33%;
-        margin-left:-5%;
-      }
-      img:nth-of-type(2){
-        width:30%;
-        position: absolute;
-        left:33%;
-        top:0%;
-      }
-      .title{
-        position: absolute;
-        left:37%;
-        top:3%;
-        font-size: 30px;
-        letter-spacing: 50px;
-        font-weight: 600;
-        color: #00F0FF;
-        background: linear-gradient(0deg, #00FFFF 50%, #FFFFFF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    }
 
     .video-list{
-      width:48%;
-      margin-top:9%;
+      width:49%;
+      margin-top:3%;
       .top{
         width:100%;
         display: flex;
         justify-content: space-between;
         .title{
+          height:55px;
           text-overflow: ellipsis;
           overflow: hidden;
           width:80%;
@@ -282,7 +299,9 @@ body{
       }
     }
   }
-
+  .video-bottom{
+    margin:4% 0 0 35%;
+  }
 }
 
 
