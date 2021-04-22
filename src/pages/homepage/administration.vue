@@ -278,7 +278,7 @@ export default {
       currentPage1:1,
       currentPage2:1,
       multipleSelection:[],
-      goods:{
+      goods: {
         name:'',
         address:'',
         price:0
